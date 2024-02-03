@@ -6,63 +6,65 @@ import java.math.RoundingMode;
 import java.util.Arrays;
 
 public class Main {
-    public static void main(String[] args) {
-        double policyAmount = 100_000_000;
-        int beneficiaries = 3;
-        float percentageFloat = 1.0f / beneficiaries;
-        double percentageDouble = 1.0 / beneficiaries;
+  public static void main(String[] args) {
+    double policyAmount = 100_000_000;
+    int beneficiaries = 3;
+    float percentageFloat = 1.0f / beneficiaries;
+    double percentageDouble = 1.0 / beneficiaries;
 
-        System.out.printf("Payout = %,.2f%n", policyAmount * percentageFloat);
-        System.out.printf("Payout = %,.2f%n", policyAmount * percentageDouble);
+    System.out.printf("Payout = %,.2f%n", policyAmount * percentageFloat);
+    System.out.printf("Payout = %,.2f%n", policyAmount * percentageDouble);
 
-        double totalUsingFloat = policyAmount - ((policyAmount * percentageFloat) * beneficiaries);
-        double totalUsingDouble = policyAmount - ((policyAmount * percentageDouble) * beneficiaries);
-        System.out.printf("Total Using Float : %,.2f%n", totalUsingFloat);
-        System.out.printf("Total Using Double : %,.2f%n", totalUsingDouble);
+    double totalUsingFloat = policyAmount - ((policyAmount * percentageFloat) * beneficiaries);
+    double totalUsingDouble = policyAmount - ((policyAmount * percentageDouble) * beneficiaries);
+    System.out.printf("Total Using Float : %,.2f%n", totalUsingFloat);
+    System.out.printf("Total Using Double : %,.2f%n", totalUsingDouble);
 
-        String[] tests = {"15.456", "8", "10000.000001", ".123"};
-        BigDecimal[] bds = new BigDecimal[tests.length];
-        Arrays.setAll(bds, i -> new BigDecimal(tests[i]));
+    String[] tests = {"15.456", "8", "10000.000001", ".123"};
+    BigDecimal[] bds = new BigDecimal[tests.length];
+    Arrays.setAll(bds, i -> new BigDecimal(tests[i]));
 
-        System.out.printf("%-14s %-15s %-8s %s%n", "Value", "Unscaled Value", "Scale",
-                "Precision");
-        for (var bd : bds) {
-            System.out.printf("%-15s %-15d %-8d %d %n",
-                    bd, bd.unscaledValue(), bd.scale(), bd.precision());
-        }
-        double[] doubles = {15.456, 8, 10000.000001, 0.125};
-        Arrays.setAll(bds, i -> BigDecimal.valueOf(doubles[i]));
-        System.out.println("------------------------------------------------------");
-        System.out.printf("%-14s %-15s %-8s %s%n", "Value", "Unscaled Value", "Scale",
-                "Precision");
-        for (var bd : bds) {
-            System.out.printf("%-15s %-15d %-8d %d %n",
-                    bd, bd.unscaledValue(), bd.scale(), bd.precision());
-            bd = bd.setScale(2, RoundingMode.HALF_UP);
-            System.out.printf("%-15s %-15d %-8d %d %n",
-                    bd, bd.unscaledValue(), bd.scale(), bd.precision());
-        }
-
-        BigDecimal policyPayout = new BigDecimal("100000000.00");
-        System.out.printf("%-15s %-15d %-8d %d %n",
-                policyPayout, policyPayout.unscaledValue(), policyPayout.scale(),
-                policyPayout.precision());
-
-        BigDecimal percent = BigDecimal.ONE.divide(BigDecimal.valueOf(beneficiaries), new MathContext(60, RoundingMode.UP));
-        System.out.println(percent);
-        BigDecimal checkAmount = policyPayout.multiply(percent);
-        System.out.printf("%.2f%n", checkAmount);
-        checkAmount = checkAmount.setScale(2, RoundingMode.HALF_UP);
-        System.out.printf("%-15s %-15d %-8d %d %n",
-                checkAmount, checkAmount.unscaledValue(), checkAmount.scale(),
-                checkAmount.precision());
-        BigDecimal totalChecksAmount = checkAmount.multiply(
-                BigDecimal.valueOf(beneficiaries));
-        System.out.printf("Combined: %.2f%n", totalChecksAmount);
-        System.out.println("Remaining = " + policyPayout.subtract(totalChecksAmount));
-
-        System.out.printf("%-15s %-15d %-8d %d %n",
-                totalChecksAmount, totalChecksAmount.unscaledValue(),
-                totalChecksAmount.scale(), totalChecksAmount.precision());
+    System.out.printf("%-14s %-15s %-8s %s%n", "Value", "Unscaled Value", "Scale", "Precision");
+    for (var bd : bds) {
+      System.out.printf(
+          "%-15s %-15d %-8d %d %n", bd, bd.unscaledValue(), bd.scale(), bd.precision());
     }
+    double[] doubles = {15.456, 8, 10000.000001, 0.125};
+    Arrays.setAll(bds, i -> BigDecimal.valueOf(doubles[i]));
+    System.out.println("------------------------------------------------------");
+    System.out.printf("%-14s %-15s %-8s %s%n", "Value", "Unscaled Value", "Scale", "Precision");
+    for (var bd : bds) {
+      System.out.printf(
+          "%-15s %-15d %-8d %d %n", bd, bd.unscaledValue(), bd.scale(), bd.precision());
+      bd = bd.setScale(2, RoundingMode.HALF_UP);
+      System.out.printf(
+          "%-15s %-15d %-8d %d %n", bd, bd.unscaledValue(), bd.scale(), bd.precision());
+    }
+
+    BigDecimal policyPayout = new BigDecimal("100000000.00");
+    System.out.printf(
+        "%-15s %-15d %-8d %d %n",
+        policyPayout, policyPayout.unscaledValue(), policyPayout.scale(), policyPayout.precision());
+
+    BigDecimal percent =
+        BigDecimal.ONE.divide(
+            BigDecimal.valueOf(beneficiaries), new MathContext(60, RoundingMode.UP));
+    System.out.println(percent);
+    BigDecimal checkAmount = policyPayout.multiply(percent);
+    System.out.printf("%.2f%n", checkAmount);
+    checkAmount = checkAmount.setScale(2, RoundingMode.HALF_UP);
+    System.out.printf(
+        "%-15s %-15d %-8d %d %n",
+        checkAmount, checkAmount.unscaledValue(), checkAmount.scale(), checkAmount.precision());
+    BigDecimal totalChecksAmount = checkAmount.multiply(BigDecimal.valueOf(beneficiaries));
+    System.out.printf("Combined: %.2f%n", totalChecksAmount);
+    System.out.println("Remaining = " + policyPayout.subtract(totalChecksAmount));
+
+    System.out.printf(
+        "%-15s %-15d %-8d %d %n",
+        totalChecksAmount,
+        totalChecksAmount.unscaledValue(),
+        totalChecksAmount.scale(),
+        totalChecksAmount.precision());
+  }
 }
